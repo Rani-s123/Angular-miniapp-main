@@ -1,0 +1,142 @@
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+    <a routerLink="/home" class="back-link">← Back to Home</a>
+  </header>
+
+  <section class="demo-section">
+    <h2>One-Way Data Binding</h2>
+
+    <div class="demo-card">
+      <h3>Interpolation</h3>
+      <p>Message: {{ message }}</p>
+      <p>Reversed: {{ message | reverse }}</p>
+      <p>Uppercase: {{ message | uppercase }}</p>
+    </div>
+
+    <div class="demo-card">
+      <h3>Property Binding</h3>
+      <img [src]="imageUrl" alt="Angular Logo" width="100">
+      <p>Disabled state: {{ isDisabled }}</p>
+      <button [disabled]="isDisabled">I'm {{ isDisabled ? 'disabled' : 'enabled' }}</button>
+      <button (click)="toggleDisabled()" class="btn-primary">Toggle Disabled</button>
+    </div>
+
+    <div class="demo-card">
+      <h3>Event Binding</h3>
+      <button (click)="handleClick()" class="btn-success">Click Me!</button>
+      <input
+        type="text"
+        (input)="onInputChange($event)"
+        placeholder="Type something..."
+        class="input-field"
+      >
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Two-Way Data Binding</h2>
+
+    <div class="demo-card">
+      <h3>NgModel (Banana in a Box)</h3>
+      <input
+        [(ngModel)]="twoWayText"
+        placeholder="Type here..."
+        class="input-field"
+      >
+      <p>You typed: <strong>{{ twoWayText }}</strong></p>
+      <p *ngIf="twoWayText">Length: {{ twoWayText.length }} characters</p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Custom Directives</h2>
+
+    <div class="demo-card">
+      <h3>Highlight Directive (Structural)</h3>
+      <p
+        appHighlight="lightgreen"
+        [defaultColor]="'transparent'"
+        class="hover-text"
+      >
+        Hover over me to see the highlight effect!
+      </p>
+
+      <div class="color-picker">
+        <label>Pick highlight color:</label>
+        <input type="color" [(ngModel)]="highlightColor">
+        <p
+          [appHighlight]="highlightColor"
+          class="hover-text"
+        >
+          Hover me with custom color!
+        </p>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <h3>Unless Directive (Structural - opposite of *ngIf)</h3>
+      <button (click)="toggleContent()" class="btn-primary">
+        Toggle Content
+      </button>
+      <div *appUnless="showContent" class="alert">
+        This appears when showContent is FALSE (opposite of *ngIf)
+      </div>
+      <div *ngIf="showContent" class="alert alert-success">
+        This appears when showContent is TRUE (normal *ngIf)
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Custom Pipes</h2>
+
+    <div class="demo-card">
+      <h3>Reverse Pipe</h3>
+      <input
+        [(ngModel)]="message"
+        placeholder="Enter text"
+        class="input-field"
+      >
+      <p>Original: {{ message }}</p>
+      <p>Reversed: {{ message | reverse }}</p>
+    </div>
+
+    <div class="demo-card">
+      <h3>Filter Pipe</h3>
+      <input
+        [(ngModel)]="searchTerm"
+        placeholder="Search items..."
+        class="input-field"
+      >
+      <div class="items-list">
+        <div
+          *ngFor="let item of items | filter:searchTerm:'name'"
+          class="item"
+        >
+          <strong>{{ item.name }}</strong> - {{ item.category }}
+        </div>
+      </div>
+      <p *ngIf="(items | filter:searchTerm:'name').length === 0" class="no-results">
+        No results found
+      </p>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Service Integration (Dependency Injection)</h2>
+
+    <div class="demo-card">
+      <h3>Counter Service with BehaviorSubject</h3>
+      <div class="counter-display">
+        <h4>Count: {{ counter$ | async }}</h4>
+      </div>
+      <div class="counter-buttons">
+        <button (click)="decrement()" class="btn-secondary">-</button>
+        <button (click)="reset()" class="btn-warning">Reset</button>
+        <button (click)="increment()" class="btn-primary">+</button>
+      </div>
+      <p class="hint">This counter uses a shared service with BehaviorSubject</p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,40 @@
+<div class="container">
+  <header>
+    <h1>Protected Route</h1>
+    <a routerLink="/home" class="back-link">← Back to Home</a>
+  </header>
+
+  <div class="content-card">
+    <div class="success-badge">
+      ✓ Access Granted
+    </div>
+
+    <h2>Welcome to the Protected Area!</h2>
+
+    <p>
+      You successfully accessed this protected route because you are authenticated.
+      This route is guarded by the <code>AuthGuard</code> which implements the
+      <code>CanActivateFn</code> interface.
+    </p>
+
+    <div class="info-section">
+      <h3>How Route Guards Work:</h3>
+      <ul>
+        <li>The <code>AuthGuard</code> checks authentication status before allowing access</li>
+        <li>If not authenticated, users are redirected to the home page</li>
+        <li>Guards can inject services using the <code>inject()</code> function</li>
+        <li>Guards return <code>true</code> to allow access or <code>false</code> to deny</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3>Route Configuration:</h3>
+      <pre><code>{{'{'}}<br>  path: 'protected',<br>  component: ProtectedComponent,<br>  canActivate: [AuthGuard]<br>{{'}'}}</code></pre>
+    </div>
+
+    <div class="actions">
+      <button (click)="logout()" class="btn-logout">Logout</button>
+      <a routerLink="/home" class="btn-secondary">Go Home</a>
+    </div>
+  </div>
+</div>

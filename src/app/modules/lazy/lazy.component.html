@@ -1,0 +1,82 @@
+<div class="container">
+  <header>
+    <h1>Lazy-Loaded Module</h1>
+    <a routerLink="/home" class="back-link">← Back to Home</a>
+  </header>
+
+  <div class="content-card">
+    <div class="lazy-badge">
+      ⚡ Lazy Loaded
+    </div>
+
+    <h2>Module Loaded Successfully!</h2>
+
+    <p>
+      This component was loaded lazily at <strong>{{ loadTime }}</strong>.
+      It was not included in the initial application bundle and was only
+      downloaded when you navigated to this route.
+    </p>
+
+    <div class="info-section">
+      <h3>What is Lazy Loading?</h3>
+      <p>
+        Lazy loading is a design pattern that defers the loading of modules
+        until they are actually needed. This helps reduce the initial bundle
+        size and improves application startup time.
+      </p>
+    </div>
+
+    <div class="info-section">
+      <h3>Benefits of Lazy Loading:</h3>
+      <ul>
+        <li><strong>Smaller Initial Bundle:</strong> Only core modules are loaded at startup</li>
+        <li><strong>Faster Load Time:</strong> Users see the app faster</li>
+        <li><strong>On-Demand Loading:</strong> Features load only when needed</li>
+        <li><strong>Better Performance:</strong> Reduced memory footprint</li>
+        <li><strong>Improved UX:</strong> Faster time to interactive</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3>How It Works in This App:</h3>
+      <div class="code-block">
+        <h4>Route Configuration:</h4>
+        <pre><code>{{'{'}}<br>  path: 'lazy',<br>  loadChildren: () => import('./modules/lazy/lazy.routes')<br>    .then(m => m.LAZY_ROUTES)<br>{{'}'}}</code></pre>
+      </div>
+
+      <div class="code-block">
+        <h4>Lazy Routes:</h4>
+        <pre><code>export const LAZY_ROUTES: Routes = [<br>  {{'{'}}<br>    path: '',<br>    loadComponent: () => import('./lazy.component')<br>      .then(m => m.LazyComponent)<br>  {{'}'}}<br>];</code></pre>
+      </div>
+    </div>
+
+    <div class="info-section highlight">
+      <h3>Check Your Browser's Network Tab!</h3>
+      <p>
+        Open your browser's DevTools and look at the Network tab.
+        You'll see that this module was loaded as a separate JavaScript
+        chunk when you navigated here, not during the initial page load.
+      </p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h4>Load Strategy</h4>
+        <p>On-Demand</p>
+      </div>
+      <div class="stat-card">
+        <h4>Bundle Type</h4>
+        <p>Separate Chunk</p>
+      </div>
+      <div class="stat-card">
+        <h4>Load Time</h4>
+        <p>{{ loadTime }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/home" class="btn-primary">Back to Home</a>
+      <a routerLink="/data-binding" class="btn-secondary">View Data Binding</a>
+    </div>
+  </div>
+</div>

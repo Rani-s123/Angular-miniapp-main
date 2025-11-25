@@ -1,0 +1,180 @@
+<div class="container">
+  <header>
+    <h1>RxJS Operators & Observables Demo</h1>
+    <a routerLink="/home" class="back-link">← Back to Home</a>
+  </header>
+
+  <section class="demo-section">
+    <h2>Debounced Search (debounceTime + switchMap)</h2>
+    <div class="demo-card">
+      <p class="description">Type to search users. Search is debounced by 300ms and uses switchMap to cancel previous requests.</p>
+      <input
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search users..."
+        class="input-field"
+      >
+      <div class="results">
+        <h4>Results ({{ debouncedResults.length }}):</h4>
+        <div *ngFor="let user of debouncedResults" class="result-item">
+          <strong>{{ user.name }}</strong> - {{ user.email }}
+        </div>
+        <p *ngIf="searchTerm && debouncedResults.length === 0" class="no-results">
+          No users found
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Map Operator</h2>
+    <div class="demo-card">
+      <p class="description">Transforms each value by multiplying by 10: [1,2,3,4,5] → [10,20,30,40,50]</p>
+      <button (click)="demonstrateMap()" class="btn-primary">Run Map Demo</button>
+      <button (click)="clearMapResults()" class="btn-secondary">Clear</button>
+      <div class="results" *ngIf="mapResults.length > 0">
+        <h4>Results:</h4>
+        <div class="result-list">{{ mapResults.join(', ') }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Filter Operator</h2>
+    <div class="demo-card">
+      <p class="description">Filters even numbers from [1-10]</p>
+      <button (click)="demonstrateFilter()" class="btn-primary">Run Filter Demo</button>
+      <button (click)="clearFilterResults()" class="btn-secondary">Clear</button>
+      <div class="results" *ngIf="filterResults.length > 0">
+        <h4>Results (Even Numbers):</h4>
+        <div class="result-list">{{ filterResults.join(', ') }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>SwitchMap Operator</h2>
+    <div class="demo-card">
+      <p class="description">
+        Cancels previous inner observables. Simulates 3 rapid clicks that trigger API calls.
+        Only the last result is kept.
+      </p>
+      <button (click)="demonstrateSwitchMap()" class="btn-primary">Run SwitchMap Demo</button>
+      <div class="results" *ngIf="switchMapResults.length > 0">
+        <h4>Final Results ({{ switchMapResults.length }} users):</h4>
+        <div *ngFor="let user of switchMapResults" class="result-item">
+          {{ user.name }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>MergeMap Operator</h2>
+    <div class="demo-card">
+      <p class="description">
+        Flattens array of users into individual emissions. Converts Observable&lt;User[]&gt; to Observable&lt;User&gt;.
+      </p>
+      <button (click)="demonstrateMergeMap()" class="btn-primary">Run MergeMap Demo</button>
+      <div class="results" *ngIf="mergeMapResults.length > 0">
+        <h4>Flattened Users:</h4>
+        <div *ngFor="let user of mergeMapResults" class="result-item">
+          {{ user.name }} - {{ user.email }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Subject</h2>
+    <div class="demo-card">
+      <p class="description">
+        A Subject is both an Observable and Observer. It multicasts values to multiple subscribers.
+        New subscribers only receive values emitted after subscription.
+      </p>
+      <div class="input-group">
+        <input
+          [(ngModel)]="subjectValue"
+          placeholder="Enter a message"
+          class="input-field"
+          (keyup.enter)="emitSubjectValue()"
+        >
+        <button (click)="emitSubjectValue()" class="btn-primary">Emit</button>
+        <button (click)="clearSubjectMessages()" class="btn-secondary">Clear</button>
+      </div>
+      <div class="results" *ngIf="subjectMessages.length > 0">
+        <h4>Emitted Messages:</h4>
+        <div *ngFor="let msg of subjectMessages; let i = index" class="result-item">
+          {{ i + 1 }}. {{ msg }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>BehaviorSubject</h2>
+    <div class="demo-card">
+      <p class="description">
+        BehaviorSubject stores the current value and emits it immediately to new subscribers.
+        It requires an initial value and always has a current value.
+      </p>
+      <div class="counter-display">
+        <h3>Current Value: {{ behaviorSubjectValue }}</h3>
+      </div>
+      <div class="input-group">
+        <button (click)="incrementBehaviorSubject()" class="btn-primary">Increment</button>
+        <button (click)="clearBehaviorSubjectHistory()" class="btn-secondary">Reset</button>
+      </div>
+      <div class="results" *ngIf="behaviorSubjectHistory.length > 0">
+        <h4>Value History:</h4>
+        <div class="result-list">{{ behaviorSubjectHistory.join(' → ') }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Observable with Async Pipe</h2>
+    <div class="demo-card">
+      <p class="description">
+        Using the async pipe to automatically subscribe and unsubscribe to observables.
+        Shows active users (even IDs) from the DataService.
+      </p>
+      <div class="results">
+        <h4>All Users:</h4>
+        <div *ngFor="let user of allUsers" class="result-item">
+          <strong>{{ user.name }}</strong> (ID: {{ user.id }})
+        </div>
+      </div>
+      <div class="results">
+        <h4>Active Users (Even IDs only):</h4>
+        <div *ngFor="let user of activeUsers$ | async" class="result-item active">
+          <strong>{{ user.name }}</strong> (ID: {{ user.id }})
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Key Differences</h2>
+    <div class="comparison-grid">
+      <div class="comparison-card">
+        <h3>Subject vs BehaviorSubject</h3>
+        <ul>
+          <li><strong>Subject:</strong> No initial value, new subscribers miss past emissions</li>
+          <li><strong>BehaviorSubject:</strong> Has initial value, new subscribers get current value immediately</li>
+          <li><strong>BehaviorSubject:</strong> Always has a current value accessible via .value</li>
+        </ul>
+      </div>
+
+      <div class="comparison-card">
+        <h3>SwitchMap vs MergeMap</h3>
+        <ul>
+          <li><strong>SwitchMap:</strong> Cancels previous inner observable when new value arrives</li>
+          <li><strong>MergeMap:</strong> Keeps all inner observables running concurrently</li>
+          <li><strong>Use switchMap:</strong> For search queries, user actions</li>
+          <li><strong>Use mergeMap:</strong> When you need all results (file uploads, etc.)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>

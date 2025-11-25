@@ -1,0 +1,48 @@
+<div class="container">
+  <header>
+    <h1>Angular Advanced Features Demo</h1>
+    <p class="subtitle">Complete demonstration of Angular core concepts</p>
+  </header>
+
+  <div class="auth-section">
+    <h2>Authentication Status</h2>
+    <div class="auth-status">
+      <span class="status-badge" [class.authenticated]="isAuthenticated$ | async">
+        {{ (isAuthenticated$ | async) ? '✓ Authenticated' : '✗ Not Authenticated' }}
+      </span>
+      <div class="auth-buttons">
+        <button *ngIf="!(isAuthenticated$ | async)" (click)="login()" class="btn btn-primary">
+          Login
+        </button>
+        <button *ngIf="isAuthenticated$ | async" (click)="logout()" class="btn btn-secondary">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="features-nav">
+    <h2>Explore Features</h2>
+    <div class="nav-grid">
+      <a routerLink="/data-binding" class="nav-card">
+        <h3>Data Binding</h3>
+        <p>One-way & two-way binding, directives & pipes</p>
+      </a>
+
+      <a routerLink="/rxjs-demo" class="nav-card">
+        <h3>RxJS Operators</h3>
+        <p>Observables, Subjects, map, filter, switchMap & more</p>
+      </a>
+
+      <a routerLink="/protected" class="nav-card">
+        <h3>Protected Route</h3>
+        <p>Route guards in action (requires authentication)</p>
+      </a>
+
+      <a routerLink="/lazy" class="nav-card">
+        <h3>Lazy Module</h3>
+        <p>Lazy-loaded module demonstration</p>
+      </a>
+    </div>
+  </nav>
+</div>
